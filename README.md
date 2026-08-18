@@ -6,7 +6,9 @@ You browse a menu, add items to a cart, enter your delivery details, and then wa
 
 **Repository:** https://github.com/akib-dabgar/food-delivery-order-management
 
-**Live app:** _deploying to Render — https://food-delivery-order-management-53d9.onrender.com
+**Live app:** https://food-delivery-order-management-53d9.onrender.com
+> Hosted on Render's free tier. If the app has been idle, the first load can take
+> up to a minute while the server wakes up.
 
 ---
 
