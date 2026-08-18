@@ -6,6 +6,9 @@ export type CustomerErrors = Partial<Record<keyof Customer, string>>;
  * Reduces a typed phone number to its subscriber digits, dropping separators
  * and an optional +91 country code or leading 0. Mirrors the server rule.
  */
+/** Letters from any script plus space, full stop, apostrophe and hyphen. */
+const NAME_PATTERN = /^\p{L}[\p{L}\s.'-]*$/u;
+
 function phoneDigits(phone: string): string {
   const digits = phone.replace(/\D/g, "");
 
@@ -36,6 +39,8 @@ export function validateCustomer(customer: Customer): CustomerErrors {
     errors.name = "Name is required";
   } else if (name.length > 80) {
     errors.name = "Name must be 80 characters or fewer";
+  } else if (!NAME_PATTERN.test(name)) {
+    errors.name = "Name may only contain letters";
   }
 
   if (!address) {

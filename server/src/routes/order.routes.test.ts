@@ -88,6 +88,21 @@ describe("POST /api/orders", () => {
     expect(order.total).toBe(menuItem.price);
   });
 
+  it("accepts names that use full stops, apostrophes and hyphens", async () => {
+    for (const name of ["Akib Dabgar", "M. K. Sharma", "D'Souza", "Anne-Marie"]) {
+      orderStore.reset();
+
+      const response = await request(app)
+        .post("/api/orders")
+        .send({
+          customer: { ...validPayload.customer, name },
+          items: validPayload.items,
+        });
+
+      expect(response.status, `name "${name}" should be accepted`).toBe(201);
+    }
+  });
+
   it("accepts a 10-digit phone written with spaces or a +91 prefix", async () => {
     for (const phone of ["9876543210", "98765 43210", "+91 98765 43210", "098765 43210"]) {
       orderStore.reset();
@@ -196,6 +211,27 @@ describe("POST /api/orders", () => {
         name: "a phone with eleven digits",
         body: {
           customer: { ...validPayload.customer, phone: "98765432109" },
+          items: validPayload.items,
+        },
+      },
+      {
+        name: "a name containing digits",
+        body: {
+          customer: { ...validPayload.customer, name: "Akib123" },
+          items: validPayload.items,
+        },
+      },
+      {
+        name: "a name that is only digits",
+        body: {
+          customer: { ...validPayload.customer, name: "12345" },
+          items: validPayload.items,
+        },
+      },
+      {
+        name: "a name with a symbol",
+        body: {
+          customer: { ...validPayload.customer, name: "Akib@Dabgar" },
           items: validPayload.items,
         },
       },

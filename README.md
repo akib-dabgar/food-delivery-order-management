@@ -155,7 +155,7 @@ Returns `201` with the created order. Notice the request only contains item ids 
 npm test
 ```
 
-That runs both sides — **156 tests** in total, 96 for the backend and 60 for the UI.
+That runs both sides — **162 tests** in total, 100 for the backend and 62 for the UI.
 
 Type checking is separate, and it covers the test files too:
 
@@ -163,7 +163,7 @@ Type checking is separate, and it covers the test files too:
 npm run typecheck
 ```
 
-**What is covered:** menu loading, order creation and retrieval, status updates, price handling, 20 different invalid inputs, every status transition rule, the timer-driven progress, and on the UI side the loading, error and empty states, all the cart operations, checkout validation and the status polling.
+**What is covered:** menu loading, order creation and retrieval, status updates, price handling, 23 different invalid inputs, every status transition rule, the timer-driven progress, and on the UI side the loading, error and empty states, all the cart operations, checkout validation and the status polling.
 
 No test waits on real time — the timers are faked, so the whole suite finishes in a few seconds.
 

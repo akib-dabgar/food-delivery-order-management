@@ -6,6 +6,13 @@ import { ORDER_STATUSES } from "../types/index.js";
  * and an optional +91 country code or leading 0. Lets someone write
  * "+91 98765 43210", "098765 43210" or "9876543210" and be treated the same.
  */
+/**
+ * A person's name: letters from any script, plus the spaces, full stops,
+ * apostrophes and hyphens that real names use ("M. K. Sharma", "D'Souza",
+ * "Anne-Marie"). Digits are rejected. Must start with a letter.
+ */
+const NAME_PATTERN = /^\p{L}[\p{L}\s.'-]*$/u;
+
 function phoneDigits(phone: string): string {
   const digits = phone.replace(/\D/g, "");
 
@@ -31,7 +38,8 @@ export const createOrderSchema = z.object({
       .string()
       .trim()
       .min(1, "name is required")
-      .max(80, "name must be 80 characters or fewer"),
+      .max(80, "name must be 80 characters or fewer")
+      .regex(NAME_PATTERN, "name may only contain letters"),
     address: z
       .string()
       .trim()

@@ -167,6 +167,29 @@ describe("checkout form", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("rejects a name containing digits", () => {
+    renderCheckout();
+    fillForm({ name: "Akib123" });
+
+    submit();
+
+    expect(
+      screen.getByText("Name may only contain letters"),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("accepts a name with a full stop, apostrophe or hyphen", async () => {
+    renderCheckout();
+    fillForm({ name: "M. K. D'Souza-Rao" });
+
+    submit();
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+    });
+  });
+
   it("rejects an address that is too short", () => {
     renderCheckout();
     fillForm({ address: "12" });
