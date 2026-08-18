@@ -88,6 +88,21 @@ describe("POST /api/orders", () => {
     expect(order.total).toBe(menuItem.price);
   });
 
+  it("accepts a 10-digit phone written with spaces or a +91 prefix", async () => {
+    for (const phone of ["9876543210", "98765 43210", "+91 98765 43210", "098765 43210"]) {
+      orderStore.reset();
+
+      const response = await request(app)
+        .post("/api/orders")
+        .send({
+          customer: { ...validPayload.customer, phone },
+          items: validPayload.items,
+        });
+
+      expect(response.status, `phone "${phone}" should be accepted`).toBe(201);
+    }
+  });
+
   it("trims surrounding whitespace on customer fields", async () => {
     const response = await request(app)
       .post("/api/orders")
@@ -167,6 +182,20 @@ describe("POST /api/orders", () => {
         name: "a phone with too few digits",
         body: {
           customer: { ...validPayload.customer, phone: "12345" },
+          items: validPayload.items,
+        },
+      },
+      {
+        name: "a phone with nine digits",
+        body: {
+          customer: { ...validPayload.customer, phone: "987654321" },
+          items: validPayload.items,
+        },
+      },
+      {
+        name: "a phone with eleven digits",
+        body: {
+          customer: { ...validPayload.customer, phone: "98765432109" },
           items: validPayload.items,
         },
       },

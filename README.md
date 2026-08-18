@@ -124,9 +124,9 @@ Everything lives under `/api` and returns JSON.
 ```json
 {
   "customer": {
-    "name": "Priya Menon",
-    "address": "44 Residency Road, Bengaluru",
-    "phone": "+91 98765 43210"
+    "name": "Akib Dabgar",
+    "address": "A-204, Sola Road, Ahmedabad 380060",
+    "phone": "9876543210"
   },
   "items": [{ "menuItemId": "m1", "quantity": 2 }]
 }
@@ -155,7 +155,7 @@ Returns `201` with the created order. Notice the request only contains item ids 
 npm test
 ```
 
-That runs both sides — **150 tests** in total, 93 for the backend and 57 for the UI.
+That runs both sides — **156 tests** in total, 96 for the backend and 60 for the UI.
 
 Type checking is separate, and it covers the test files too:
 
@@ -163,7 +163,7 @@ Type checking is separate, and it covers the test files too:
 npm run typecheck
 ```
 
-**What is covered:** menu loading, order creation and retrieval, status updates, price handling, 18 different invalid inputs, every status transition rule, the timer-driven progress, and on the UI side the loading, error and empty states, all the cart operations, checkout validation and the status polling.
+**What is covered:** menu loading, order creation and retrieval, status updates, price handling, 20 different invalid inputs, every status transition rule, the timer-driven progress, and on the UI side the loading, error and empty states, all the cart operations, checkout validation and the status polling.
 
 No test waits on real time — the timers are faked, so the whole suite finishes in a few seconds.
 

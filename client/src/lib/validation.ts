@@ -3,6 +3,24 @@ import type { Customer } from "../types";
 export type CustomerErrors = Partial<Record<keyof Customer, string>>;
 
 /**
+ * Reduces a typed phone number to its subscriber digits, dropping separators
+ * and an optional +91 country code or leading 0. Mirrors the server rule.
+ */
+function phoneDigits(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+
+  if (digits.length === 12 && digits.startsWith("91")) {
+    return digits.slice(2);
+  }
+
+  if (digits.length === 11 && digits.startsWith("0")) {
+    return digits.slice(1);
+  }
+
+  return digits;
+}
+
+/**
  * Mirrors the server rules in server/src/schemas/order.schema.ts so the user
  * gets immediate feedback. The server still validates every request; this is
  * convenience, not a security boundary.
@@ -28,14 +46,14 @@ export function validateCustomer(customer: Customer): CustomerErrors {
     errors.address = "Address must be 200 characters or fewer";
   }
 
-  const digitCount = (phone.match(/\d/g) ?? []).length;
+  const digits = phoneDigits(phone);
 
   if (!phone) {
     errors.phone = "Phone number is required";
   } else if (!/^\+?[\d\s()-]+$/.test(phone)) {
     errors.phone = "Phone may only contain digits and + - ( )";
-  } else if (digitCount < 7) {
-    errors.phone = "Phone must contain at least 7 digits";
+  } else if (digits.length !== 10) {
+    errors.phone = "Phone must be a 10-digit mobile number";
   } else if (phone.length > 20) {
     errors.phone = "Phone must be 20 characters or fewer";
   }

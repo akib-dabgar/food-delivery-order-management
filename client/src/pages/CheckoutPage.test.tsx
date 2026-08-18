@@ -198,9 +198,43 @@ describe("checkout form", () => {
     submit();
 
     expect(
-      screen.getByText("Phone must contain at least 7 digits"),
+      screen.getByText("Phone must be a 10-digit mobile number"),
     ).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects a phone with more than 10 digits", () => {
+    renderCheckout();
+    fillForm({ phone: "98765432109" });
+
+    submit();
+
+    expect(
+      screen.getByText("Phone must be a 10-digit mobile number"),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("accepts a 10-digit number written with spaces", async () => {
+    renderCheckout();
+    fillForm({ phone: "98765 43210" });
+
+    submit();
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+    });
+  });
+
+  it("accepts a number with the +91 country code", async () => {
+    renderCheckout();
+    fillForm({ phone: "+91 98765 43210" });
+
+    submit();
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+    });
   });
 
   it("moves focus to the first invalid field on submit", () => {

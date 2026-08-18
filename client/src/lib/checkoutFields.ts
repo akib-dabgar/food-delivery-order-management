@@ -28,19 +28,19 @@ export const CHECKOUT_FIELDS: CheckoutField[] = [
   {
     id: "name",
     label: "Name",
-    placeholder: "Priya Menon",
+    placeholder: "Akib Dabgar",
     autoComplete: "name",
   },
   {
     id: "address",
     label: "Delivery address",
-    placeholder: "44 Residency Road, Bengaluru 560025",
+    placeholder: "A-204, Sola Road, Ahmedabad 380060",
     autoComplete: "street-address",
   },
   {
     id: "phone",
     label: "Phone number",
-    placeholder: "+91 98765 43210",
+    placeholder: "9876543210",
     autoComplete: "tel",
     inputMode: "tel",
   },

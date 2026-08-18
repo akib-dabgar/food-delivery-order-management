@@ -2,6 +2,25 @@ import { z } from "zod";
 import { ORDER_STATUSES } from "../types/index.js";
 
 /**
+ * Reduces a typed phone number to its subscriber digits, dropping separators
+ * and an optional +91 country code or leading 0. Lets someone write
+ * "+91 98765 43210", "098765 43210" or "9876543210" and be treated the same.
+ */
+function phoneDigits(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+
+  if (digits.length === 12 && digits.startsWith("91")) {
+    return digits.slice(2);
+  }
+
+  if (digits.length === 11 && digits.startsWith("0")) {
+    return digits.slice(1);
+  }
+
+  return digits;
+}
+
+/**
  * Note there is no `.strict()` here. Unknown keys are stripped rather than
  * rejected, which is what makes a client-supplied `price` harmless: it never
  * reaches the service, and the total is always computed from menu data.
@@ -21,15 +40,15 @@ export const createOrderSchema = z.object({
     phone: z
       .string()
       .trim()
-      .min(7, "phone must be at least 7 characters")
+      .min(1, "phone is required")
       .max(20, "phone must be 20 characters or fewer")
       .regex(
         /^\+?[\d\s()-]+$/,
         "phone may only contain digits and the characters + - ( )",
       )
       .refine(
-        (value) => (value.match(/\d/g) ?? []).length >= 7,
-        "phone must contain at least 7 digits",
+        (value) => phoneDigits(value).length === 10,
+        "phone must be a 10-digit mobile number",
       ),
   }),
   items: z
