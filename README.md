@@ -6,7 +6,7 @@ You browse a menu, add items to a cart, enter your delivery details, and then wa
 
 **Repository:** https://github.com/akib-dabgar/food-delivery-order-management
 
-**Live app:** _deploying to Render — link will be added here once it is up and checked_
+**Live app:** _deploying to Render — https://food-delivery-order-management-53d9.onrender.com
 
 ---
 
