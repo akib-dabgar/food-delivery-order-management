@@ -1,0 +1,21 @@
+node_modules/
+dist/
+build/
+coverage/
+
+.env
+.env.*
+!.env.example
+
+*.log
+npm-debug.log*
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+# Working notes — not part of the submission
+CLAUDE.md
+docs/
